@@ -48,10 +48,11 @@ RUN apt-get clean \
 	' >> /home/chrome/.fluxbox/init \
 	&& chown -R chrome:chrome /home/chrome/.config /home/chrome/.fluxbox /config /home/chrome/Downloads
 
-USER chrome
-
 VOLUME /config
 VOLUME /home/chrome/Downloads
+
+
+USER chrome
 
 WORKDIR /tmp
 
