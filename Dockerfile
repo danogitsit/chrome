@@ -3,6 +3,7 @@ FROM ubuntu:22.04
 LABEL maintainer="Tomohisa Kusano <siomiz@gmail.com>"
 
 ENV VNC_SCREEN_SIZE=1024x768
+ENV CHROME_OPTS_OVERRIDE="https://www.bbc.co.uk --user-data-dir=/config --no-sandbox --no-default-browser-check --window-position=0,0 --force-device-scale-factor=1 --disable-dev-shm-usage"
 
 COPY copyables /
 
@@ -36,6 +37,8 @@ RUN apt-get clean \
 	&& ln -s /update /usr/local/sbin/update \
 	&& mkdir -p /home/chrome/.config/chrome-remote-desktop \
 	&& mkdir -p /home/chrome/.fluxbox \
+	&& mkdir -p /config \
+	&& mkdir -p /home/chrome/Downloads \	
 	&& echo ' \n\
 		session.screen0.toolbar.visible:        false\n\
 		session.screen0.fullMaximization:       true\n\
@@ -43,13 +46,14 @@ RUN apt-get clean \
 		session.screen0.maxDisableMove: true\n\
 		session.screen0.defaultDeco:    NONE\n\
 	' >> /home/chrome/.fluxbox/init \
-	&& chown -R chrome:chrome /home/chrome/.config /home/chrome/.fluxbox
+	&& chown -R chrome:chrome /home/chrome/.config /home/chrome/.fluxbox /config /home/chrome/Downloads
 
 USER chrome
 
-VOLUME ["/home/chrome"]
+VOLUME /config
+VOLUME /home/chrome/Downloads
 
-WORKDIR /home/chrome
+WORKDIR /tmp
 
 EXPOSE 5900
 
