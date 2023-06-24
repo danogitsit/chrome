@@ -38,6 +38,7 @@ RUN apt-get clean \
 	&& mkdir -p /home/chrome/.config/chrome-remote-desktop \
 	&& mkdir -p /home/chrome/.fluxbox \
 	&& mkdir -p /config \
+	&& mkdir -p /config/Default \
 	&& mkdir -p /home/chrome/Downloads \	
 	&& echo ' \n\
 		session.screen0.toolbar.visible:        false\n\
@@ -46,9 +47,9 @@ RUN apt-get clean \
 		session.screen0.maxDisableMove: true\n\
 		session.screen0.defaultDeco:    NONE\n\
 	' >> /home/chrome/.fluxbox/init \
-	&& chown -R chrome:chrome /home/chrome/.config /home/chrome/.fluxbox /config /home/chrome/Downloads
+	&& chown -R chrome:chrome /home/chrome/.config /home/chrome/.fluxbox /config /config/Default /home/chrome/Downloads
 
-VOLUME /config
+VOLUME /config/Default
 VOLUME /home/chrome/Downloads
 
 
