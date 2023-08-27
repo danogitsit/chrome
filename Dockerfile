@@ -1,11 +1,14 @@
 FROM ubuntu:22.04
 
-LABEL maintainer="Tomohisa Kusano <siomiz@gmail.com>"
+LABEL maintainer="DO"
 
-ENV VNC_SCREEN_SIZE=1024x768
-ENV CHROME_OPTS_OVERRIDE="https://www.bbc.co.uk --user-data-dir=/config --no-sandbox --disable-features=InfiniteSessionRestore --no-default-browser-check --disable-fre --no-first-run --window-position=0,0 --force-device-scale-factor=1 --disable-dev-shm-usage"
+ENV VNC_CONTAINER_NAME="container"
+ENV VNC_SCREEN_SIZE="1024x768"
+ENV VNC_MAX_INACTIVE_SEC="300"
+ENV VNC_MAX_INACTIVE_CHECK="30"
+ENV VNC_MAX_INACTIVE_REPORTURL="https://httpbin.org/post"
 ENV X11VNC_OPTS_OVERRIDE="-nopw -wait 0 -forever -xrandr -repeat"
-ENV PWSH_SCRIPT="/scripts/test-file.ps1"
+ENV CHROME_OPTS_OVERRIDE="https://www.bbc.co.uk --user-data-dir=/config --no-sandbox --disable-features=InfiniteSessionRestore --no-default-browser-check --disable-fre --no-first-run --window-position=0,0 --force-device-scale-factor=1 --disable-dev-shm-usage"
 
 COPY copyables /
 
@@ -49,7 +52,7 @@ RUN apt-get clean \
 		session.screen0.maxDisableMove: true\n\
 		session.screen0.defaultDeco:    NONE\n\
 	' >> /home/chrome/.fluxbox/init \
-	&& chown -R chrome:chrome /home/chrome/.config /home/chrome/.fluxbox /config /config/Default /home/chrome/Downloads
+	&& chown -R chrome:chrome /home/chrome/.config /home/chrome/.fluxbox /config /config/Default /home/chrome/Downloads /scripts
 
 RUN apt-get update \
 	&& apt-get install -y wget apt-transport-https software-properties-common \
@@ -60,7 +63,6 @@ RUN apt-get update \
 
 VOLUME /config/Default
 VOLUME /home/chrome/Downloads
-VOLUME /scripts
 
 USER chrome
 
